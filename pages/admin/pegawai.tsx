@@ -1,4 +1,5 @@
-// File: pages/admin/pegawai.tsx
+'use client';
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PlusCircle, Edit, Trash2 } from 'lucide-react';
@@ -28,129 +29,115 @@ export default function PegawaiPage() {
   return (
     <AdminLayout pageTitle="Data Pegawai">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 bg-white dark:bg-slate-800 p-6 rounded-xl shadow-lg">
           <div>
-            <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Daftar Semua Pegawai</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Kelola data pegawai desa di sini.</p>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Daftar Semua Pegawai</h2>
+            <p className="text-base text-slate-600 dark:text-slate-400 mt-1">Kelola data pegawai desa di sini dengan mudah.</p>
           </div>
-<button
-  className="flex items-center gap-1 
-    bg-blue-500 text-white 
-    text-sm sm:text-base 
-    font-medium sm:font-semibold 
-    px-3 py-1.5 sm:px-4 sm:py-2 
-    rounded-md sm:rounded-lg 
-    hover:bg-blue-600 transition-colors 
-    shadow w-full max-w-[180px] sm:w-auto sm:max-w-none"
->
-  <PlusCircle size={16} className="sm:hidden" />
-  <PlusCircle size={20} className="hidden sm:inline" />
-  <span>Tambah Pegawai</span>
-</button>
-
         </div>
 
-        {/* TAMPILAN TABLE UNTUK DESKTOP */}
-        <div className="hidden md:block bg-white dark:bg-slate-800 rounded-xl shadow-md overflow-x-auto">
-          <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
-            <thead className="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400">
-              <tr>
-                <th className="px-6 py-3">Nama</th>
-                <th className="px-6 py-3">Jabatan</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3">Tgl Bergabung</th>
-                <th className="px-6 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pegawaiList.map((pegawai) => (
-                <tr key={pegawai.id} className="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
-                  <td className="px-6 py-4 font-medium text-slate-900 whitespace-nowrap dark:text-white flex items-center gap-3">
-                    <img className="w-10 h-10 rounded-full object-cover" src={pegawai.avatar} alt={pegawai.nama} />
-                    {pegawai.nama}
-                  </td>
-                  <td className="px-6 py-4">{pegawai.jabatan}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      pegawai.status === 'Aktif'
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
-                        : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
-                    }`}>{pegawai.status}</span>
-                  </td>
-                  <td className="px-6 py-4">{pegawai.tanggal_bergabung}</td>
-                  <td className="px-6 py-4 text-center">
-                    <div className="flex justify-center gap-4">
-                      <button className="text-blue-500 hover:text-blue-700" title="Edit"><Edit size={18} /></button>
-                      <button className="text-red-500 hover:text-red-700" title="Hapus"><Trash2 size={18} /></button>
-                    </div>
-                  </td>
+        {/* Tombol Tambah */}
+        <div className="flex justify-start mb-6">
+          <button
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold px-6 py-3 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 w-full sm:w-auto justify-center"
+          >
+            <PlusCircle size={20} />
+            <span>Tambah Pegawai</span>
+          </button>
+        </div>
+
+        {/* Tabel Desktop */}
+        <div className="hidden md:block bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden mt-6">
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm text-left text-slate-600 dark:text-slate-300">
+              <thead className="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400">
+                <tr>
+                  <th className="px-6 py-3 rounded-tl-lg">Nama</th>
+                  <th className="px-6 py-3">Jabatan</th>
+                  <th className="px-6 py-3">Status</th>
+                  <th className="px-6 py-3">Tgl Bergabung</th>
+                  <th className="px-6 py-3 text-center rounded-tr-lg">Aksi</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-{/* MOBILE VERSION - CARD VIEW */}
-<div className="md:hidden space-y-4">
-  {pegawaiList.map((pegawai) => (
-    <div
-      key={pegawai.id}
-      className="rounded-xl bg-white dark:bg-slate-800 shadow-sm p-4 border border-slate-100 dark:border-slate-700"
-    >
-      {/* Avatar + Nama (masih di tengah biar keren) */}
-      <div className="flex flex-col items-right mb-3">
-        <img
-          className="w-14 h-14 rounded-full object-cover mb-1"
-          src={pegawai.avatar}
-          alt={pegawai.nama}
-        />
-        <div className="text-left">
-          <p className="text-xs text-slate-500 dark:text-slate-400">Nama</p>
-          <p className="text-sm font-semibold text-slate-800 dark:text-white">{pegawai.nama}</p>
-        </div>
-      </div>
-
-      {/* Dua kolom info */}
-      <div className="grid grid-cols-2 gap-y-3 text-sm text-slate-700 dark:text-slate-300">
-        {/* Kiri */}
-        <div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Jabatan</p>
-          <p>{pegawai.jabatan}</p>
-        </div>
-        {/* Kanan */}
-        <div className="text-right">
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Status</p>
-          <span className={`inline-block text-xs font-semibold px-2 py-1 rounded-full ${
-            pegawai.status === 'Aktif'
-              ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
-              : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'
-          }`}>
-            {pegawai.status}
-          </span>
-        </div>
-
-        {/* Kiri */}
-        <div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Tgl Bergabung</p>
-          <p>{pegawai.tanggal_bergabung}</p>
-        </div>
-        {/* Kanan */}
-        <div className="text-right">
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Aksi</p>
-          <div className="flex justify-end gap-3">
-            <button className="text-blue-500 hover:text-blue-700" title="Edit">
-              <Edit size={18} />
-            </button>
-            <button className="text-red-500 hover:text-red-700" title="Hapus">
-              <Trash2 size={18} />
-            </button>
+              </thead>
+              <tbody>
+                {pegawaiList.map((pegawai) => (
+                  <tr key={pegawai.id} className="bg-white border-b border-slate-200 dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors duration-150">
+                    <td className="px-6 py-4 flex items-center gap-3 font-medium text-slate-900 dark:text-white whitespace-nowrap">
+                      <img
+                        className="w-10 h-10 rounded-full object-cover border-2 border-blue-400 dark:border-blue-600"
+                        src={pegawai.avatar}
+                        alt={pegawai.nama}
+                        onError={(e) => { e.currentTarget.src = `https://placehold.co/150x150/aabbcc/ffffff?text=${pegawai.nama.charAt(0)}`; }}
+                      />
+                      {pegawai.nama}
+                    </td>
+                    <td className="px-6 py-4">{pegawai.jabatan}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 text-xs font-semibold rounded-full ${pegawai.status === 'Aktif' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'}`}>
+                        {pegawai.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">{pegawai.tanggal_bergabung}</td>
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex justify-center gap-4">
+                        <button className="text-blue-500 hover:text-blue-700 p-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30" title="Edit">
+                          <Edit size={18} />
+                        </button>
+                        <button className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30" title="Hapus">
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-    </div>
-  ))}
-</div>
 
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4 mt-6">
+          {pegawaiList.map((pegawai) => (
+            <div key={pegawai.id} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-5 rounded-xl shadow-lg">
+              <div className="flex items-center gap-4 mb-4 border-b pb-4 border-slate-200 dark:border-slate-700">
+                <img
+                  className="w-16 h-16 rounded-full object-cover border-2 border-blue-400 dark:border-blue-600"
+                  src={pegawai.avatar}
+                  alt={pegawai.nama}
+                  onError={(e) => { e.currentTarget.src = `https://placehold.co/150x150/aabbcc/ffffff?text=${pegawai.nama.charAt(0)}`; }}
+                />
+                <div className="flex-grow">
+                  <p className="font-bold text-xl text-slate-800 dark:text-white">{pegawai.nama}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">{pegawai.jabatan}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4 text-sm text-slate-700 dark:text-slate-300 text-center">
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Status</p>
+                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${pegawai.status === 'Aktif' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300'}`}>
+                    {pegawai.status}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Tgl Bergabung</p>
+                  <p className="font-medium">{pegawai.tanggal_bergabung}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Aksi</p>
+                  <div className="flex flex-col sm:flex-row justify-center gap-2">
+                    <button className="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/50 p-2 rounded-lg" title="Edit">
+                      <Edit size={16} />
+                    </button>
+                    <button className="text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/50 p-2 rounded-lg" title="Hapus">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </motion.div>
     </AdminLayout>
   );
