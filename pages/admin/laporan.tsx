@@ -58,7 +58,6 @@ export default function LaporanPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 print:hidden">
           <div>
             <h2 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Rekapitulasi Kehadiran Pegawai</h2>
@@ -73,7 +72,6 @@ export default function LaporanPage() {
           </button>
         </div>
 
-        {/* Filter */}
         <div className="mb-4 print:hidden w-full max-w-xs">
           <div className="relative flex items-center">
             <Filter className="absolute left-3 text-slate-500 dark:text-slate-300" size={18} />
@@ -89,17 +87,15 @@ export default function LaporanPage() {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md">
+        {/* Table Desktop */}
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-md hidden md:block">
           <div className="p-4" id="laporan-area">
-            {/* Header Cetak */}
             <div className="text-center mb-6 hidden print:block">
               <h1 className="text-2xl font-bold">Laporan Absensi Pegawai</h1>
               <h2 className="text-lg font-medium">Periode: <span className="capitalize">{activeTab}</span></h2>
               <p className="text-sm">Desa Maju Sejahtera</p>
             </div>
 
-            {/* Table Content */}
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left text-slate-500 dark:text-slate-400">
                 <thead className="text-xs text-slate-700 uppercase bg-slate-50 dark:bg-slate-700 dark:text-slate-400">
@@ -134,6 +130,62 @@ export default function LaporanPage() {
                   </tr>
                 </tfoot>
               </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Card Mobile */}
+        <div className="md:hidden space-y-4 mt-4">
+          {dummyData[activeTab].map((pegawai) => (
+            <div key={pegawai.id} className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow border border-slate-200 dark:border-slate-700">
+              <div className="mb-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400">Nama</p>
+                <p className="font-semibold text-slate-800 dark:text-white">{pegawai.nama}</p>
+              </div>
+              <div className="mb-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400">Jabatan</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{pegawai.jabatan}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm mt-2">
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Hadir</p>
+                  <p className="font-semibold text-green-600">{pegawai.hadir}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Terlambat</p>
+                  <p className="font-semibold text-amber-600">{pegawai.terlambat}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Izin</p>
+                  <p className="font-semibold text-blue-600">{pegawai.izin}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Alpha</p>
+                  <p className="font-semibold text-red-600">{pegawai.alpha}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-xl shadow-inner border border-slate-200 dark:border-slate-600 mt-6">
+            <p className="text-sm font-semibold text-slate-800 dark:text-white mb-2">Total Rekap</p>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-300 mb-1">Hadir</p>
+                <p className="font-bold text-green-700 dark:text-green-400">{total.hadir}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-300 mb-1">Terlambat</p>
+                <p className="font-bold text-amber-700 dark:text-amber-400">{total.terlambat}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-300 mb-1">Izin</p>
+                <p className="font-bold text-blue-700 dark:text-blue-400">{total.izin}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-300 mb-1">Alpha</p>
+                <p className="font-bold text-red-700 dark:text-red-400">{total.alpha}</p>
+              </div>
             </div>
           </div>
         </div>
